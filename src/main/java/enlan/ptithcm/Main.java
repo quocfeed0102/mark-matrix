@@ -1,3 +1,7 @@
+// N18DCC004 Hoang Nghia Quoc Anh
+// N18DCCN163 Ho Mai Que
+// N18DCCN166 Tran Anh Quoc
+
 package enlan.ptithcm;
 
 import edu.stanford.nlp.ling.CoreLabel;
@@ -10,7 +14,6 @@ import java.io.IOException;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 
 public class Main {
 
@@ -113,14 +116,14 @@ public class Main {
                 }
             }
             if (!(indexQuery == null)) {
-                initMarkMatrix(choice);
-                initQuery(choice);
+                initMarkMatrix(indexQuery);
+                initQuery(indexQuery);
                 initDocument();
-                System.out.println(queries.get(choice));
+                System.out.println(queries.get(indexQuery));
                 ArrayList<String> results = searchDocuments(
                         markMatrix,
                         document,
-                        choice,
+                        indexQuery,
                         isAnd
                 );
                 // Hiển thị kết quả tìm kiếm
@@ -207,17 +210,17 @@ public class Main {
                 if (querySum == queries.size()) {
                     results.add(document);
                 }
-            }
-            if (querySum > 0) {
-                sum.put(document, querySum);
+            } else {
+                if (querySum > 0)
+                    results.add(document);
             }
         }
         if (isAnd) return results;
-        int maxVal = sum.values().stream().max(Integer::compare).get();
-        results = (ArrayList<String>) sum.entrySet().stream()
-                .filter(entry -> entry.getValue() == maxVal)
-                .map(Map.Entry::getKey)
-                .collect(Collectors.toList());
+//        int maxVal = sum.values().stream().max(Integer::compare).get();
+//        results = (ArrayList<String>) sum.entrySet().stream()
+//                .filter(entry -> entry.getValue() == maxVal)
+//                .map(Map.Entry::getKey)
+//                .collect(Collectors.toList());
 
         return results;
     }
@@ -227,32 +230,23 @@ public class Main {
 //            String[] documents,
 //            String query
 //    ) {
+//        String bl = "";
 //        ArrayList<String> results = new ArrayList<String>();
 //        Map<String, Integer> sum = new HashMap<>();
 //        // Tính tổng của các hàng tương ứng với các từ khóa trong câu truy vấn
 //        for (String document : documents) {
-//            int querySum = 0;
-//            for (String keyword : markMatrix.get(document).keySet()) {
-//                if (markMatrix.get(document).get(keyword) == 1) {
-//                    querySum += 1;
+//            for (String tempQuery : queryBooleanAfterProcess) {
+//                int querySum = 0;
+//                bl = bl + tempQuery + " " + algebraBooleanAfterProcess.remove(0);
+//                initMarkMatrix(tempQuery);
+//                for (String keyword : markMatrix.get(document).keySet()) {
+//                    if (querySum == queries.size()) {
+//                        results.add(document);
+//                    }
 //                }
 //            }
-//            if (isAnd) {
-//                if (querySum == queries.size()) {
-//                    results.add(document);
-//                }
-//            }
-//            if (querySum > 0) {
-//                sum.put(document, querySum);
-//            }
-//        }
-//        if (isAnd) return results;
-//        int maxVal = sum.values().stream().max(Integer::compare).get();
-//        results = (ArrayList<String>) sum.entrySet().stream()
-//                .filter(entry -> entry.getValue() == maxVal)
-//                .map(Map.Entry::getKey)
-//                .collect(Collectors.toList());
 //
+//        }
 //        return results;
 //    }
 
