@@ -1,0 +1,57 @@
+
+v
+java:S2293"YReplace the type specification in this constructor call with the diamond operator ("<>").(ß¼ŞÒ8ñ´¼½ë0
+v
+java:S22938"YReplace the type specification in this constructor call with the diamond operator ("<>").(ëêåè8ò´¼½ë0
+{
+java:S2293:"YReplace the type specification in this constructor call with the diamond operator ("<>").(­¦áîÿÿÿÿÿ8ò´¼½ë0
+v
+java:S2293<"YReplace the type specification in this constructor call with the diamond operator ("<>").(šºñ‹8ò´¼½ë0
+w
+java:S2293Ä"YReplace the type specification in this constructor call with the diamond operator ("<>").(úª©¡8ò´¼½ë0
+|
+java:S2293«"YReplace the type specification in this constructor call with the diamond operator ("<>").(éÒöğùÿÿÿÿ8ò´¼½ë0
+R
+java:S1066Ï"/Merge this if statement with the enclosing one.( Ü–‹ùÿÿÿÿ8ò´¼½ë0
+“
+java:S1319¾"pThe return type of this method should be an interface such as "List" rather than the implementation "ArrayList".(óƒ‘øÿÿÿÿ8ò´¼½ë0
+?
+java:S1643˜"Use a StringBuilder instead.(‹Å¶øÿÿÿÿ8ó´¼½ë0
+o
+java:S2095†"LUse try-with-resources or close this "BufferedReader" in a "finally" clause.(µÎ Àúÿÿÿÿ8Ê·¼½ë0
+n
+java:S3655Ø"PCall "Optional#isPresent()" or "!Optional#isEmpty()" before accessing the value.(ø¼¶Š8Ê·¼½ë0
+{	java:S1154"ZRename this constant name to match the regular expression '^[A-Z][A-Z0-9]*(_[A-Z0-9]+)*$'.(ª¬¿¡ûÿÿÿÿ8Ë·¼½ë0
+v	java:S1156"ZRename this constant name to match the regular expression '^[A-Z][A-Z0-9]*(_[A-Z0-9]+)*$'.(’·çÖ8Ë·¼½ë0
+v
+java:S1450>"TRemove the "query" field and declare it as a local variable in the relevant methods.(·´ğàÿÿÿÿÿ8Ë·¼½ë0
+Z	java:S106U"9Replace this use of System.out or System.err by a logger.(É¸·¾ıÿÿÿÿ8Ğ·¼½ë0
+Z	java:S106V"9Replace this use of System.out or System.err by a logger.(œÇÍÿÿÿÿÿ8Ñ·¼½ë0
+Z	java:S106W"9Replace this use of System.out or System.err by a logger.(Æã÷Çüÿÿÿÿ8Ñ·¼½ë0
+U	java:S106X"9Replace this use of System.out or System.err by a logger.(†¸²ğ8Ñ·¼½ë0
+U	java:S106Y"9Replace this use of System.out or System.err by a logger.(¿äœÚ8Ñ·¼½ë0
+Z	java:S106^"9Replace this use of System.out or System.err by a logger.(ï¶§ùÿÿÿÿ8Ñ·¼½ë0
+Z	java:S106d"9Replace this use of System.out or System.err by a logger.(ï¶§ùÿÿÿÿ8Ñ·¼½ë0
+Z	java:S106i"9Replace this use of System.out or System.err by a logger.(Ùñî”ûÿÿÿÿ8Ò·¼½ë0
+T	java:S106p"9Replace this use of System.out or System.err by a logger.(®°ıe8Ò·¼½ë0
+E
+java:S1940s")Use the opposite operator ("!=") instead.(÷±İO8Ò·¼½ë0
+Z	java:S106w"9Replace this use of System.out or System.err by a logger.(•¥ö·ùÿÿÿÿ8Ò·¼½ë0
+U	java:S106"9Replace this use of System.out or System.err by a logger.(­‚€÷8Ó·¼½ë0
+V	java:S106‚"9Replace this use of System.out or System.err by a logger.(µèéğ8Ó·¼½ë0
+G
+java:S1940‡")Use the opposite operator ("!=") instead.(ş¸¤¯8Ó·¼½ë0
+V	java:S106ˆ"9Replace this use of System.out or System.err by a logger.(ºÔ——8ÁŒ½½ë0
+L
+java:S2201 ".The return value of "replaceAll" must be used.(œ­ß¸8Õ·¼½ë0
+O
+java:S1172Á",Remove this unused method parameter "query".(Ğãø‰şÿÿÿÿ8×·¼½ë0
+Y	java:S125å"<This block of commented-out lines of code should be removed.(¬å’º8ÿ¹È½ë0
+M
+java:S1481Š"*Remove this unused "temps" local variable.(Ú¡°çøÿÿÿÿ8Û·¼½ë0
+O
+java:S1481‹",Remove this unused "tempSet" local variable.(ŸïŞãùÿÿÿÿ8Û·¼½ë0
+T
+java:S1068@"2Remove this unused "booleanAlgebra" private field.(¿ºê‘şÿÿÿÿ8ß·¼½ë0
+M
+java:S1068D"0Remove this unused "regexBoolean" private field.(øß¥ˆ8ß·¼½ë0
