@@ -12,8 +12,7 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.*;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 public class Main {
 
@@ -60,195 +59,176 @@ public class Main {
 
     private static final Map<String, Set<String>> queries = new HashMap<String, Set<String>>();
 
-    private static final Map<String, Map<String, Integer>> markMatrix = new HashMap<String, Map<String, Integer>>();
+    private static final Map<String, List<Double>> vectorDocuments = new HashMap<String, List<Double>>();
 
-    private static int[] query;
+    private static final Map<String, List<Double>> vectorQueries = new HashMap<String, List<Double>>();
 
-    private static Set<String> booleanAlgebra;
+    private static ArrayList<String> wordsList = new ArrayList<>();
 
-    private static String[] document;
-
-    private static final String[] regexBoolean = {"AND", "OR", "AND NOT"};
-
-    private static List<String> queryBooleanAfterProcess = new ArrayList<>();
-
-    private static List<String> algebraBooleanAfterProcess = new ArrayList<>();
+    private static ArrayList<Integer> wordDocumentCounts = new ArrayList<>();
 
     public static void main(String[] args) {
 
         Scanner sc = new Scanner(System.in);
         readFile(documents, fileDocumentPath);
         readFile(queries, fileQueryPath);
-        String choice;
-        boolean isAnd = false;
-        String optionalQuery = null;
-        String indexQuery = null;
-        do {
+        initVectorDocument();
+        initWordDocumentCounts();
 
-            System.out.println("1.Tim kiem chinh xac (AND)");
-            System.out.println("2.Tim kiem tuong doi (OR)");
-            System.out.println("3.Tim kiem theo query bat ky");
-            System.out.println("4.Thoat");
-            System.out.print("Nhap lua chon:");
+        String choice;
+        do {
+            System.out.println("Nhap exit de thoat!");
+            System.out.print("Nhap lua chon: ");
             choice = sc.nextLine();
             switch (choice) {
-                case "1": {
-                    isAnd = true;
-                    System.out.print("Tim kiem theo cau query so:");
-                    indexQuery = sc.nextLine();
-                    break;
-                }
-                case "2": {
-                    isAnd = false;
-                    System.out.print("Tim kiem theo cau query so:");
-                    indexQuery = sc.nextLine();
-                    break;
-                }
-                case "3": {
-                    System.out.println("Nhap menh de bat ky: ");
-                    optionalQuery = sc.nextLine().trim();
-                    initBooleanAlgebra(optionalQuery);
-                    initAlgebra(optionalQuery);
+                case "exit": {
                     break;
                 }
                 default: {
-                    System.out.println("Nhap sai!");
+                    Map<String, Double> res = new HashMap<>();
+                    System.out.println("choice: " + choice);
+                    if (!vectorQueries.containsKey(choice)) {
+                        initVectorQuery(choice);
+                    }
+
+                    double[] vectorQuery = vectorQueries.get(choice).stream().mapToDouble(Double::doubleValue).toArray();
+
+                    for (Map.Entry<String, List<Double>> vectorDocument : vectorDocuments.entrySet()) {
+                        double[] vectorDoc = vectorDocument.getValue().stream().mapToDouble(Double::doubleValue).toArray();
+                        res.put(vectorDocument.getKey(), calculateCosineSimilarity(vectorDoc, vectorQuery));
+                    }
+//                    Collections.sort(res);
+
+                    System.out.println(res);
+                    List<Map.Entry<String, Double>> list = new ArrayList<>(res.entrySet());
+
+                    // sort the list by the values of the map entries
+                    Collections.sort(list, Map.Entry.comparingByValue());
+
+                    // create a new linked hash map to store the sorted entries
+                    Map<String, Double> sortedMap = new LinkedHashMap<>();
+
+                    // iterate over the sorted list of entries and add them to the new map
+                    String indexDocument = "";
+                    double value = 0;
+                    for (Map.Entry<String, Double> entry : list) {
+                        sortedMap.put(entry.getKey(), entry.getValue());
+                        indexDocument = entry.getKey();
+                        value = entry.getValue();
+                    }
+                    System.out.println("res sorted: " + sortedMap);
+                    System.out.println("Ket qua: doc_index:" + indexDocument + " value:" + value);
                 }
             }
-            if (!(indexQuery == null)) {
-                initMarkMatrix(indexQuery);
-                initQuery(indexQuery);
-                initDocument();
-                System.out.println(queries.get(indexQuery));
-                ArrayList<String> results = searchDocuments(
-                        markMatrix,
-                        document,
-                        indexQuery,
-                        isAnd
-                );
-                // Hiển thị kết quả tìm kiếm
-                System.out.println("Results:");
-                if (!results.isEmpty()) {
-                    for (String document : results) {
-                        System.out.println(document);
+        } while (!choice.equals("exit"));
 
+    }
+
+    public static void initVectorQuery(String index) {
+        // Tính toán vector query sử dụng TF-IDF
+        int[] queryVector = new int[wordsList.size()];
+        String[] queryWords = queries.get(index).toArray(new String[0]);
+        for (String queryWord : queryWords) {
+            int tempIndex = wordsList.indexOf(queryWord);
+            if (tempIndex != -1) {
+                queryVector[tempIndex]++;
+            }
+        }
+
+        // Tính toán TF-IDF cho vector query
+        Double[] queryTFIDFVector = new Double[wordsList.size()];
+        for (int i = 0; i < wordsList.size(); i++) {
+            int tf = queryVector[i];
+            double idf = Math.log((double) documents.size() / (double) wordDocumentCounts.get(i));
+            queryTFIDFVector[i] = tf * idf;
+        }
+        vectorQueries.put(index, Arrays.asList(queryTFIDFVector));
+        System.out.println("Query " + index + ": " + Arrays.toString(queryTFIDFVector));
+    }
+
+    public static void initWordDocumentCounts() {
+        // Khởi tạo mảng documentCounts
+        int[] documentCounts = new int[wordsList.size()];
+
+// Đếm số lần xuất hiện của các từ trong tài liệu
+        for (int i = 0; i < documents.size(); i++) {
+            String[] words = documents.get(String.valueOf(i + 1)).toArray(new String[0]);
+            ArrayList<String> uniqueWords = new ArrayList<>(Arrays.asList(words));
+            uniqueWords = new ArrayList<>(uniqueWords.stream().distinct().collect(Collectors.toList()));
+            for (String word : uniqueWords) {
+                int index = wordsList.indexOf(word);
+                if (index != -1) {
+                    documentCounts[index]++;
+                }
+            }
+        }
+
+        // Hiển thị giá trị của wordDocumentCounts
+        for (int i = 0; i < wordsList.size(); i++) {
+            wordDocumentCounts.add(documentCounts[i]);
+            System.out.println(wordsList.get(i) + " appears in " + wordDocumentCounts.get(i) + " documents");
+        }
+
+    }
+
+    public static void initVectorDocument() {
+        for (Map.Entry<String, Set<String>> document : documents.entrySet()) {
+            String[] words = document.getValue().toArray(new String[0]);
+            for (String word : words) {
+                if (!wordsList.contains(word)) {
+                    wordsList.add(word);
+                }
+            }
+        }
+        Collections.sort(wordsList);
+        System.out.println("wordlist: " + wordsList);
+        System.out.println("wordlist size: " + wordsList.size());
+        double[][] tf = new double[documents.size()][wordsList.size()];
+        for (int i = 0; i < documents.size(); i++) {
+            String[] words = documents.get(String.valueOf(i + 1)).toArray(new String[0]);
+            for (int j = 0; j < wordsList.size(); j++) {
+                int count = 0;
+                for (String word : words) {
+                    if (word.equals(wordsList.get(j))) {
+                        count++;
                     }
                 }
-                indexQuery = null;
-            } else if (!(optionalQuery == null)) {
-                System.out.println("optional");
-
-                ///
-                optionalQuery = null;
-
+                tf[i][j] = (double) count / words.length;
             }
-        } while (!choice.equals("4"));
-
-    }
-
-    public static void initBooleanAlgebra(String input) {
-        Pattern pattern = Pattern.compile("\\b(AND NOT|AND|OR)\\b");
-        Matcher matcher = pattern.matcher(input);
-
-        int start = 0;
-        while (matcher.find()) {
-            String token = input.substring(start, matcher.start()).trim();
-            queryBooleanAfterProcess.add(token);
-            start = matcher.end();
         }
-    }
-
-    public static void initAlgebra(String input) {
-        for (String temp : queryBooleanAfterProcess) {
-            input.replaceAll(temp, "");
-        }
-        Collections.addAll(algebraBooleanAfterProcess, input.trim().split(""));
-    }
-
-    public static void initMarkMatrix(String indexQuery) {
-        for (int i = 1; i <= documents.size(); i++) {
-            markMatrix.put("" + i, new HashMap<>());
-            for (String keyword : queries.get(indexQuery)) {
-                if (documents.get("" + i).contains(keyword)) {
-                    markMatrix.get("" + i).put(keyword, 1);
+        double[] idf = new double[wordsList.size()];
+        Arrays.fill(idf, 0);
+        for (int j = 0; j < wordsList.size(); j++) {
+            for (int i = 0; i < documents.size(); i++) {
+                String[] words = documents.get(String.valueOf(i + 1)).toArray(new String[0]);
+                for (String word : words) {
+                    if (word.equals(wordsList.get(j))) {
+                        idf[j]++;
+                        break;
+                    }
                 }
             }
+            idf[j] = Math.log(documents.size() / idf[j]) / Math.log(2);
         }
-    }
 
-    public static void initQuery(String index) {
-        query = new int[queries.get(index).size()];
-        for (int i = 0; i < queries.get(index).size(); i++) {
-            query[i] = 1;
-        }
-    }
-
-    public static void initDocument() {
-        document = new String[documents.size()];
-        for (int i = 1; i <= documents.size(); i++) {
-            document[i - 1] = "" + i;
-        }
-    }
-
-    public static ArrayList<String> searchDocuments(
-            Map<String, Map<String, Integer>> markMatrix,
-            String[] documents,
-            String query,
-            boolean isAnd
-    ) {
-        ArrayList<String> results = new ArrayList<String>();
-        Map<String, Integer> sum = new HashMap<>();
-        // Tính tổng của các hàng tương ứng với các từ khóa trong câu truy vấn
-        for (String document : documents) {
-            int querySum = 0;
-            for (String keyword : markMatrix.get(document).keySet()) {
-                if (markMatrix.get(document).get(keyword) == 1) {
-                    querySum += 1;
-                }
-            }
-            if (isAnd) {
-                if (querySum == queries.size()) {
-                    results.add(document);
-                }
-            } else {
-                if (querySum > 0)
-                    results.add(document);
+        double[][] tfidf = new double[documents.size()][wordsList.size()];
+        for (int i = 0; i < documents.size(); i++) {
+            for (int j = 0; j < wordsList.size(); j++) {
+                tfidf[i][j] = tf[i][j] * idf[j];
             }
         }
-        if (isAnd) return results;
-//        int maxVal = sum.values().stream().max(Integer::compare).get();
-//        results = (ArrayList<String>) sum.entrySet().stream()
-//                .filter(entry -> entry.getValue() == maxVal)
-//                .map(Map.Entry::getKey)
-//                .collect(Collectors.toList());
 
-        return results;
+        for (int i = 0; i < documents.size(); i++) {
+            System.out.printf("Document %d: ", i + 1);
+            vectorDocuments.put(String.valueOf(i + 1), new ArrayList<>());
+            for (int j = 0; j < wordsList.size(); j++) {
+                System.out.printf("%.4f ", tfidf[i][j]);
+                vectorDocuments.get(String.valueOf(i + 1)).add(tfidf[i][j]);
+            }
+            System.out.println();
+        }
+
     }
-
-//    public static ArrayList<String> searchDocuments(
-//            Map<String, Map<String, Integer>> markMatrix,
-//            String[] documents,
-//            String query
-//    ) {
-//        String bl = "";
-//        ArrayList<String> results = new ArrayList<String>();
-//        Map<String, Integer> sum = new HashMap<>();
-//        // Tính tổng của các hàng tương ứng với các từ khóa trong câu truy vấn
-//        for (String document : documents) {
-//            for (String tempQuery : queryBooleanAfterProcess) {
-//                int querySum = 0;
-//                bl = bl + tempQuery + " " + algebraBooleanAfterProcess.remove(0);
-//                initMarkMatrix(tempQuery);
-//                for (String keyword : markMatrix.get(document).keySet()) {
-//                    if (querySum == queries.size()) {
-//                        results.add(document);
-//                    }
-//                }
-//            }
-//
-//        }
-//        return results;
-//    }
 
     public static void readFile(Map<String, Set<String>> map, String filePath) {
         try {
@@ -300,5 +280,20 @@ public class Main {
             }
         }
         return result;
+    }
+
+    public static double calculateCosineSimilarity(double[] v1, double[] v2) {
+        double dotProduct = 0;
+        double norm1 = 0;
+        double norm2 = 0;
+
+        for (int i = 0; i < v1.length; i++) {
+            dotProduct += v1[i] * v2[i];
+            norm1 += v1[i] * v1[i];
+            norm2 += v2[i] * v2[i];
+        }
+
+        double cosineSimilarity = dotProduct / (Math.sqrt(norm1) * Math.sqrt(norm2));
+        return cosineSimilarity;
     }
 }

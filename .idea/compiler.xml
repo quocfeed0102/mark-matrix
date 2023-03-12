@@ -9,5 +9,8 @@
         <module name="BaiTap1" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="BaiTap2" target="11" />
+    </bytecodeTargetLevel>
   </component>
 </project>

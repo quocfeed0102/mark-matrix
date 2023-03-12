@@ -1,0 +1,43 @@
+
+v
+java:S2293"YReplace the type specification in this constructor call with the diamond operator ("<>").(ß¼ŞÒ8®Ò®²í0
+v
+java:S2293:"YReplace the type specification in this constructor call with the diamond operator ("<>").(ëêåè8®Ò®²í0
+{
+java:S2293<"YReplace the type specification in this constructor call with the diamond operator ("<>").(­¦áîÿÿÿÿÿ8®Ò®²í0
+{
+java:S2293>"YReplace the type specification in this constructor call with the diamond operator ("<>").(®Ëó—øÿÿÿÿ8®Ò®²í0
+{
+java:S2293@"YReplace the type specification in this constructor call with the diamond operator ("<>").(ÁÛÒ©ÿÿÿÿÿ8°Ò®²í0
+|
+java:S2293‘"YReplace the type specification in this constructor call with the diamond operator ("<>").(éÒöğùÿÿÿÿ8°Ò®²í0
+h
+java:S1301S"KReplace this "switch" statement by "if" statements to increase readability.(¨ÕÉ8°Ò®²í0
+?
+java:S1643ş"Use a StringBuilder instead.(‹Å¶øÿÿÿÿ8±Ò®²í0
+†
+java:S1488¨"hImmediately return this expression instead of assigning it to the temporary variable "cosineSimilarity".(£ú•œ8±Ò®²í0
+o
+java:S2095ì"LUse try-with-resources or close this "BufferedReader" in a "finally" clause.(µÎ Àúÿÿÿÿ8º×®²í0
+{	java:S1156"ZRename this constant name to match the regular expression '^[A-Z][A-Z0-9]*(_[A-Z0-9]+)*$'.(ª¬¿¡ûÿÿÿÿ8»×®²í0
+v	java:S1158"ZRename this constant name to match the regular expression '^[A-Z][A-Z0-9]*(_[A-Z0-9]+)*$'.(’·çÖ8»×®²í0
+Z	java:S106P"9Replace this use of System.out or System.err by a logger.(ô¸­úøÿÿÿÿ8Í×®²í0
+U	java:S106Q"9Replace this use of System.out or System.err by a logger.(¿äœÚ8Î×®²í0
+U	java:S106Y"9Replace this use of System.out or System.err by a logger.(‘˜ˆ€8Ï×®²í0
+Z	java:S106f"9Replace this use of System.out or System.err by a logger.(¸šñÙüÿÿÿÿ8Ó×®²í0
+]	java:S125d"<This block of commented-out lines of code should be removed.(½•Êøÿÿÿÿ8Ó×®²í0
+U	java:S106w"9Replace this use of System.out or System.err by a logger.(¿Œšº8Ø×®²í0
+Z	java:S106x"9Replace this use of System.out or System.err by a logger.(Ä‹ÿùÿÿÿÿ8Ş×®²í0
+[	java:S106’"9Replace this use of System.out or System.err by a logger.(Ñßœêşÿÿÿÿ8ä×®²í0
+V	java:S106©"9Replace this use of System.out or System.err by a logger.(Ø†Ä8ê×®²í0
+o
+java:S3776®"RRefactor this method to reduce its Cognitive Complexity from 32 to the 15 allowed.(ŠÎË18å×®²í0
+[	java:S106¸"9Replace this use of System.out or System.err by a logger.(Ğ“š¢ùÿÿÿÿ8ë×®²í0
+V	java:S106¹"9Replace this use of System.out or System.err by a logger.(„àäâ8ô×®²í0
+V	java:S106Ş"9Replace this use of System.out or System.err by a logger.(£â¦Ë8ö×®²í0
+[	java:S106á"9Replace this use of System.out or System.err by a logger.(Ø‘áüÿÿÿÿ8÷×®²í0
+[	java:S106ä"9Replace this use of System.out or System.err by a logger.(ªÓ¼áşÿÿÿÿ8úò±²í0
+M
+java:S1481ğ"*Remove this unused "temps" local variable.(Ú¡°çøÿÿÿÿ8ú×®²í0
+O
+java:S1481ñ",Remove this unused "tempSet" local variable.(ŸïŞãùÿÿÿÿ8ú×®²í0
